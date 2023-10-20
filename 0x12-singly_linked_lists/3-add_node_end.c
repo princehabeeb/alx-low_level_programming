@@ -1,41 +1,79 @@
 #include <stdlib.h>
-#include <string.h>
 #include "lists.h"
 
 /**
- * add_node_end - adds a new node at the end of a linked list
- * @head: double pointer to the list_t list
- * @str: string to put in the new node
+ * add_node_end - function with two arguments
+ * @head: pointer to struct of linked list
+ * @str: char type pointer to string
  *
- * Return: address of the new element, or NULL if it failed
+ * Description: adds a new node at the end of linked list
+ * Return: address of new element
  */
 list_t *add_node_end(list_t **head, const char *str)
 {
- list_t *new;
- list_t *temp = *head;
- unsigned int len = 0;
+	int count = 0;
+	list_t *end_node, *cursor;
 
- while (str[len])
- len++;
+	end_node = malloc(sizeof(list_t));
+	if (end_node == NULL)
+		return (NULL);
 
- new = malloc(sizeof(list_t));
- if (!new)
- return (NULL);
+	if (str)
+	{
+		end_node->str = _strdup(str);
+		while (str[count] != '\0')
+			count++;
+		end_node->len = count;
+	}
+	else
+	{
+		end_node->str = NULL;
+		end_node->len = 0;
+	}
+	end_node->next = NULL;
+	if (*head)
+	{
+	cursor = *head;
+	while (cursor->next != NULL)
+		cursor = cursor->next;
+	cursor->next = end_node;
+	}
+	else
+		*head = end_node;
+	return (end_node);
+}
 
- new->str = strdup(str);
- new->len = len;
- new->next = NULL;
+/**
+ * *_strdup - function with one argument
+ * @str: string argument
+ *
+ * Description: returns a pointer to allocated space in memory
+ * Return: pointer
+ */
+char *_strdup(const char *str)
+{
+	int i, j;
+	char *ptr;
 
- if (*head == NULL)
- {
- *head = new;
- return (new);
- }
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	while (*(str + i) != '\0')
+	{
+		i++;
+	}
 
- while (temp->next)
- temp = temp->next;
+	ptr = malloc(sizeof(char) * i + 1);
 
- temp->next = new;
+	if (ptr == NULL)
+		return (NULL);
 
- return (new);
+	j = 0;
+	while (str[j] != '\0')
+	{
+		ptr[j] = str[j];
+		j++;
+	}
+	ptr[j] = '\0';
+	return (ptr);
 }
