@@ -1,30 +1,62 @@
 #include <stdlib.h>
-#include <string.h>
 #include "lists.h"
 
 /**
- * add_node - adds a new node at the beginning of a linked list
- * @head: double pointer to the list_t list
- * @str: new string to add in the node
+ * add_node - function with two arguments
+ * @head: double pointer to linked list
+ * @str: string pointer
  *
- * Return: the address of the new element, or NULL if it fails
+ * Description: adds a new node at the beginning
+ * Return: address of new element
  */
 list_t *add_node(list_t **head, const char *str)
 {
- list_t *new;
- unsigned int len = 0;
+	int count = 0;
+	list_t *temp;
 
- while (str[len])
- len++;
+	temp = malloc(sizeof(list_t));
+	if (temp == NULL)
+		return (NULL);
+	temp->str = _strdup(str);
+	while (str[count] != '\0')
+		count++;
+	temp->len = count;
+	temp->next = *head;
+	*head = temp;
+	return (temp);
+}
 
- new = malloc(sizeof(list_t));
- if (!new)
- return (NULL);
+/**
+ * *_strdup - function with one argument
+ * @str: string argument
+ *
+ * Description: returns a pointer to allocated space in memory
+ * Return: pointer
+ */
+char *_strdup(const char *str)
+{
+	int i, j;
+	char *ptr;
 
- new->str = strdup(str);
- new->len = len;
- new->next = (*head);
- (*head) = new;
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	while (*(str + i) != '\0')
+	{
+		i++;
+	}
 
- return (*head);
+	ptr = malloc(sizeof(char) * i + 1);
+
+	if (ptr == NULL)
+		return (NULL);
+
+	j = 0;
+	while (str[j] != '\0')
+	{
+		ptr[j] = str[j];
+		j++;
+	}
+	ptr[j] = '\0';
+	return (ptr);
 }
